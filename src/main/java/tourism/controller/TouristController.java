@@ -21,7 +21,7 @@ public class TouristController {
 
     @GetMapping("/attractions")
     public String attractions(Model model) {
-        model.addAttribute("attractions", touristService.getAttractions());
+        model.addAttribute("attractions", touristService.getAttractionsDatabase());
         return "index";
     }
 

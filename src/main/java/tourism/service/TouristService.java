@@ -48,4 +48,9 @@ public class TouristService {
     public TouristAttraction removeAttraction(String name) {
         return touristRepository.removeAttraction(name);
     }
+
+
+    public List<TouristAttraction>getAttractionsDatabase(){
+        return touristRepository.getAttractionsDatabase();
+    }
 }

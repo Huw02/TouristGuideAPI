@@ -144,9 +144,6 @@ public class TouristRepository {
 
         }
 
-
-
-
         return listOfAttractions;
     }
 

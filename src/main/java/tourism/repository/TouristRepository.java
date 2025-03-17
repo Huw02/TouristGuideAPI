@@ -1,7 +1,9 @@
 package tourism.repository;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Repository;
 import tourism.model.Byer;
 import tourism.model.Tags;
@@ -15,13 +17,20 @@ public class TouristRepository {
     private List<TouristAttraction> attractions = new ArrayList<>();
     private JdbcTemplate jdbcTemplate;
 
+    @Value("${spring.datasource.url}")
+    private String dbUrl;
+    @Value("${spring.datasource.username}")
+    private String username;
+    @Value("${spring.datasource.password}")
+    private String password;
+
     public TouristRepository() {
 
 
         DriverManagerDataSource dataSource = new DriverManagerDataSource(
-                System.getenv("DB_URL"),
-                System.getenv("DB_USERNAME"),
-                System.getenv("DB_PASSWORD")
+                System.getenv(dbUrl),
+                System.getenv(username),
+                System.getenv(password)
         );
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
         this.jdbcTemplate =new JdbcTemplate(dataSource);
@@ -100,6 +109,46 @@ public class TouristRepository {
 
 
     //metoder til at hente og indsætte data i databasen
+
+
+    public List<TouristAttraction> getAttractionsDatabase(){
+        List<TouristAttraction> listOfAttractions = new ArrayList<>();
+
+
+        SqlRowSet rowSet =jdbcTemplate.queryForRowSet("SELECT * FROM attractions");
+
+        while(rowSet.next()){
+            List<Tags> listOfTags = new ArrayList<>();
+            int attractionsID =rowSet.getInt("attractionsID");
+            String name = rowSet.getString("name");
+            String description = rowSet.getString("beskrivelse");
+            String byerID = rowSet.getString("ByerID");
+
+
+            String by = "" + jdbcTemplate.queryForRowSet("SELECT Byer FROM byer WHERE ByerID VALUES (?)", byerID);
+            Byer byName = Byer.valueOf(by);
+
+            SqlRowSet attractions_tags =jdbcTemplate.queryForRowSet("SELECT tagsID FROM attractions_tags WHERE AttractionsID VALUES(?)", attractionsID);
+            while(attractions_tags.next()){
+                int tagsID = attractions_tags.getInt("TagsID");
+                SqlRowSet tags =jdbcTemplate.queryForRowSet("SELECT tags FROM tags WHERE tagsID VALUES(?)", tagsID);
+                while(tags.next()){
+                    String tagsName = tags.getString("tags");
+                    Tags tagsEnumName = Tags.valueOf(tagsName);
+                    listOfTags.add(tagsEnumName);
+                }
+
+            }
+
+            listOfAttractions.add(new TouristAttraction(name, description, listOfTags, byName));
+
+        }
+
+
+
+
+        return listOfAttractions;
+    }
 
     public void insertAttraction(String name, String description, Byer by){
         String sql ="INSERT INTO attraction (name, description, by) VALUES ? ? ?";

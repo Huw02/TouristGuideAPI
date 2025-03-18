@@ -13,23 +13,9 @@ import java.util.List;
 public class ByerRepository {
     private JdbcTemplate jdbcTemplate;
 
-    @Value("${spring.datasource.url}")
-    private String dbUrl;
-    @Value("${spring.datasource.username}")
-    private String username;
-    @Value("${spring.datasource.password}")
-    private String password;
+    public ByerRepository(JdbcTemplate jdbcTemplate) {
 
-    public ByerRepository() {
-
-
-        DriverManagerDataSource dataSource = new DriverManagerDataSource(
-                System.getenv(dbUrl),
-                System.getenv(username),
-                System.getenv(password)
-        );
-        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        this.jdbcTemplate =new JdbcTemplate(dataSource);
+        this.jdbcTemplate =new JdbcTemplate();
     }
 
 

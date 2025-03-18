@@ -17,23 +17,9 @@ public class TouristRepository {
     private List<OldTouristAttraction> attractions = new ArrayList<>();
     private JdbcTemplate jdbcTemplate;
 
-    @Value("${spring.datasource.url}")
-    private String dbUrl;
-    @Value("${spring.datasource.username}")
-    private String username;
-    @Value("${spring.datasource.password}")
-    private String password;
 
-    public TouristRepository() {
-
-
-        DriverManagerDataSource dataSource = new DriverManagerDataSource(
-                System.getenv(dbUrl),
-                System.getenv(username),
-                System.getenv(password)
-        );
-        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        this.jdbcTemplate =new JdbcTemplate(dataSource);
+    public TouristRepository(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate =new JdbcTemplate();
     }
 
     public List<OldTouristAttraction> getAttractions() {

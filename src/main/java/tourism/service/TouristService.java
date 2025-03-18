@@ -20,6 +20,8 @@ public class TouristService {
         this.byerRepository = byerRepository;
     }
 
+
+
     public List<OldTags> getTags(String name) {
         return touristRepository.getTags(name);
     }

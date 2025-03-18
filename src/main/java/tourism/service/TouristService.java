@@ -42,8 +42,8 @@ public class TouristService {
         return touristAttraction;
     }
 
-    public void updateAttraction(OldTouristAttraction touristAttraction) {
-        touristRepository.updateAttraction(touristAttraction);
+    public void updateAttraction(TouristAttraction touristAttraction) {
+        touristRepository.updateTouristAttraction(touristAttraction);
     }
 
     public OldTouristAttraction getAttractionByName(String name) {
@@ -65,6 +65,15 @@ public class TouristService {
 
     public List<Byer>getAllByer(){
         return byerRepository.getAllbyer();
+    }
+
+    public List<Tags>getTagsByName(String name){
+        return tagsRepository.getTagsForAttraction(touristRepository.getTouristAttractionByName(name).getId());
+    }
+
+
+    public TouristAttraction getTouristAttractionByName(String name){
+        return touristRepository.getTouristAttractionByName(name);
     }
 
 }

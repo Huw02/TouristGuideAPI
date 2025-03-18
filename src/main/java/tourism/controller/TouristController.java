@@ -4,9 +4,7 @@ package tourism.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import tourism.model.OldByer;
-import tourism.model.OldTags;
-import tourism.model.OldTouristAttraction;
+import tourism.model.*;
 import tourism.repository.ByerRepository;
 import tourism.repository.TagsRepository;
 import tourism.service.TouristService;
@@ -36,8 +34,8 @@ public class TouristController {
 
     @GetMapping("/add")
     public String addTouristAttraction(Model model) {
-        OldTouristAttraction attraction = new OldTouristAttraction();
-        attraction.setBy(OldByer.KØBENHAVN);
+        TouristAttraction attraction = new TouristAttraction();
+        attraction.setBy(new Byer("København", 33));
         model.addAttribute("attraction", attraction);
         model.addAttribute("city", touristService.getAllByer());
         model.addAttribute("tags", touristService.getAllTags());
@@ -65,19 +63,19 @@ public class TouristController {
 
     @GetMapping("/attractions/edit/{name}")
     public String editAttraction(@PathVariable String name, Model model) {
-        OldTouristAttraction touristAttraction = touristService.getAttractionByName(name);
+        TouristAttraction touristAttraction = touristService.getTouristAttractionByName(name);
         if (touristAttraction.getName() == null) {
             throw new IllegalArgumentException("Id not found");
         }
         model.addAttribute("attraction", touristAttraction);
-        model.addAttribute("city", OldByer.values());
-        model.addAttribute("tags", OldTags.values());
+        model.addAttribute("city", touristService.getAllByer());
+        model.addAttribute("tags", touristService.getAllTags());
 
         return "editAttraction";
     }
 
     @PostMapping("/edit")
-    public String postEditAttraction(@ModelAttribute OldTouristAttraction touristAttraction) {
+    public String postEditAttraction(@ModelAttribute TouristAttraction touristAttraction) {
         touristService.updateAttraction(touristAttraction);
         return "redirect:/attractionsList";
     }
@@ -90,7 +88,7 @@ public class TouristController {
 
     @PostMapping("/attractions/delete/{name}")
     public String removeAttraction(@PathVariable String name) {
-        touristService.removeAttraction(name);
+        touristService.getTagsByName(name);
         return "redirect:/attractionsList";
     }
 }

@@ -210,9 +210,9 @@ public class TouristRepository {
     }
 
 
-    public void deleteTouristAttraction(TouristAttraction touristAttraction){
+    public void deleteTouristAttraction(String name){
         String sql = "DELETE FROM attractions WHERE attractionsID = ?";
-        jdbcTemplate.update(sql, touristAttraction.getId());
+        jdbcTemplate.update(sql, getTouristAttractionByName(name).getId());
     }
 
     public TouristAttraction updateTouristAttraction(TouristAttraction touristAttraction){

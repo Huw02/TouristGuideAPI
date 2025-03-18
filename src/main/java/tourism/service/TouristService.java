@@ -1,9 +1,9 @@
 package tourism.service;
 
 import org.springframework.stereotype.Service;
-import tourism.model.OldTags;
-import tourism.model.OldTouristAttraction;
-import tourism.model.TouristAttraction;
+import tourism.model.*;
+import tourism.repository.ByerRepository;
+import tourism.repository.TagsRepository;
 import tourism.repository.TouristRepository;
 
 import java.util.List;
@@ -11,9 +11,13 @@ import java.util.List;
 @Service
 public class TouristService {
     private final TouristRepository touristRepository;
+    private final TagsRepository tagsRepository;
+    private final ByerRepository byerRepository;
 
-    public TouristService(TouristRepository touristRepository) {
+    public TouristService(TouristRepository touristRepository, TagsRepository tagsRepository, ByerRepository byerRepository) {
         this.touristRepository = touristRepository;
+        this.tagsRepository = tagsRepository;
+        this.byerRepository = byerRepository;
     }
 
     public List<OldTags> getTags(String name) {
@@ -24,8 +28,8 @@ public class TouristService {
         return touristRepository.getAllTouristAttractions();
     }
 
-    public OldTouristAttraction getAttractionsByName(String name) {
-        return touristRepository.getAttractionsByName(name);
+    public TouristAttraction getAttractionsByName(String name) {
+        return touristRepository.getTouristAttractionByName(name);
     }
 
     public TouristRepository setAttractions(List<OldTouristAttraction> attractions) {
@@ -46,12 +50,21 @@ public class TouristService {
         return touristRepository.getAttractionByName(name);
     }
 
-    public OldTouristAttraction removeAttraction(String name) {
-        return touristRepository.removeAttraction(name);
+    public void removeAttraction(String name) {
+        touristRepository.deleteTouristAttraction(name);
     }
 
 
     public List<OldTouristAttraction>getAttractionsDatabase(){
         return touristRepository.getAttractionsDatabase();
     }
+
+    public List<Tags>getAllTags(){
+        return tagsRepository.getAllTags();
+    }
+
+    public List<Byer>getAllByer(){
+        return byerRepository.getAllbyer();
+    }
+
 }

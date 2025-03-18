@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import tourism.model.OldByer;
 import tourism.model.OldTags;
 import tourism.model.OldTouristAttraction;
+import tourism.repository.ByerRepository;
+import tourism.repository.TagsRepository;
 import tourism.service.TouristService;
 
 
@@ -15,13 +17,14 @@ import tourism.service.TouristService;
 public class TouristController {
     private final TouristService touristService;
 
+
     public TouristController(TouristService touristService) {
         this.touristService = touristService;
     }
 
     @GetMapping("/attractions")
     public String attractions(Model model) {
-        model.addAttribute("attractions", touristService.getAttractionsDatabase());
+        model.addAttribute("attractions", touristService.getAttractions());
         return "index";
     }
 
@@ -36,8 +39,8 @@ public class TouristController {
         OldTouristAttraction attraction = new OldTouristAttraction();
         attraction.setBy(OldByer.KØBENHAVN);
         model.addAttribute("attraction", attraction);
-        model.addAttribute("city", OldByer.values());
-        model.addAttribute("tags", OldTags.values());
+        model.addAttribute("city", touristService.getAllByer());
+        model.addAttribute("tags", touristService.getAllTags());
         return "add";
     }
 

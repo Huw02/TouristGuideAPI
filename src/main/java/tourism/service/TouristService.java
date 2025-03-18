@@ -2,8 +2,6 @@ package tourism.service;
 
 import org.springframework.stereotype.Service;
 import tourism.model.*;
-import tourism.repository.ByerRepository;
-import tourism.repository.TagsRepository;
 import tourism.repository.TouristRepository;
 
 import java.util.List;

@@ -1,10 +1,8 @@
 package tourism.rowMappers;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import tourism.model.Byer;
 import tourism.model.TouristAttraction;
-import tourism.repository.TagsRepository;
 import tourism.repository.TouristRepository;
 
 import java.sql.ResultSet;

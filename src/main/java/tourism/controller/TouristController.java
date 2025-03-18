@@ -5,8 +5,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import tourism.model.*;
-import tourism.repository.ByerRepository;
-import tourism.repository.TagsRepository;
 import tourism.service.TouristService;
 
 

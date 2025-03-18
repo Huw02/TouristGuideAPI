@@ -11,13 +11,11 @@ import java.util.List;
 @Service
 public class TouristService {
     private final TouristRepository touristRepository;
-    private final TagsRepository tagsRepository;
-    private final ByerRepository byerRepository;
 
-    public TouristService(TouristRepository touristRepository, TagsRepository tagsRepository, ByerRepository byerRepository) {
+
+    public TouristService(TouristRepository touristRepository) {
         this.touristRepository = touristRepository;
-        this.tagsRepository = tagsRepository;
-        this.byerRepository = byerRepository;
+
     }
 
 
@@ -62,15 +60,15 @@ public class TouristService {
     }
 
     public List<Tags>getAllTags(){
-        return tagsRepository.getAllTags();
+        return touristRepository.getAllTags();
     }
 
     public List<Byer>getAllByer(){
-        return byerRepository.getAllbyer();
+        return touristRepository.getAllbyer();
     }
 
     public List<Tags>getTagsByName(String name){
-        return tagsRepository.getTagsForAttraction(touristRepository.getTouristAttractionByName(name).getId());
+        return touristRepository.getTagsForAttraction(touristRepository.getTouristAttractionByName(name).getId());
     }
 
 

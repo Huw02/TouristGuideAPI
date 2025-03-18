@@ -5,13 +5,14 @@ import org.springframework.jdbc.core.RowMapper;
 import tourism.model.Byer;
 import tourism.model.TouristAttraction;
 import tourism.repository.TagsRepository;
+import tourism.repository.TouristRepository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class TouristAttractionRowMapper implements RowMapper<TouristAttraction> {
 
-    private TagsRepository tagsRepository;
+    private TouristRepository touristRepository;
 
     @Override
     public TouristAttraction mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -26,7 +27,7 @@ public class TouristAttractionRowMapper implements RowMapper<TouristAttraction> 
 
         touristAttraction.setBy(by);
 
-        touristAttraction.setTags(tagsRepository.getTagsForAttraction(rs.getInt(touristAttraction.getId())));
+        touristAttraction.setTags(touristRepository.getTagsForAttraction(rs.getInt(touristAttraction.getId())));
         return touristAttraction;
     }
 }

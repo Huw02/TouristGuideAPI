@@ -3,11 +3,13 @@ package tourism.repository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.stereotype.Repository;
 import tourism.model.Byer;
 import tourism.rowMappers.ByerRowMapper;
 
 import java.util.List;
 
+@Repository
 public class ByerRepository {
     private JdbcTemplate jdbcTemplate;
 

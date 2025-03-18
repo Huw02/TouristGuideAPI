@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/attractionsListStyle.css?v=0.02}" href="/css/attractionsListStyle.css">
+    <title>Turist Attraktioner</title>
+</head>
+<body>
+<h1 align="center">Turistattraktioner</h1>
+
+<table border="1">
+    <thead>
+    <tr>
+      <th>Navn</th>
+      <th>Beskrivelse</th>
+    </tr>
+  </thead>
+  <tbody>
+
+    <tr th:each ="attraction : ${attractionsList} ">
+      <td th:text ="${attraction.getName}" ></td>
+      <td th:text="${attraction.getDescription}" ></td>
+
+
+        <td><form th:action="@{'/attractions/tags/' + ${attraction.getName()}}" th:method="get">
+            <button th:type="submit">tags</button>
+        </form></td>
+
+        <td><form th:action="@{'/attractions/edit/' + ${attraction.getName()}}" th:method="get">
+            <button th:type="submit">opdater</button>
+        </form></td>
+
+        <td><form th:action="@{'/attractions/delete/' + ${attraction.getName()}}" th:method="post">
+            <button th:type="submit">slet</button>
+        </form></td>
+
+
+    </tr>
+  </tbody>
+</table>
+    <br>
+
+
+<a th:href="@{/attractions}">Gå til forsiden</a>
+
+
+
+<footer>
+    <nav>
+        <br><br/>
+        <Strong>Contact information: </Strong>
+        <p>Hannibal Ussing-Widholm: Hannibal@ussing.com</p>
+        <p>Jonas Nilket: Nilket@gmail.com</p>
+        <p>Joakim Rosdal: Rosdal@gmail.com</p>
+    </nav>
+</footer>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" xmlns:th="http://www.thymeleaf.org">
+    <link rel="stylesheet" th:href="@{/css/tagsStyle.css?v=0.01}" href="/css/tagsStyle.css">
+    <title>Tourist Attraction Tags</title>
+</head>
+<body>
+    <div align="center">
+        <header>
+        <h1>Information about <strong th:text="${name}"></strong></h1>
+        </header>
+
+
+        <table>
+        <tr th:each=" tags : ${touristAttraction}">
+
+            <td th:text="${tags.getDisplayName}"></td>
+        </tr>
+        </table>
+
+
+    </div>
+    <a class="link" th:href="@{/attractionsList}">Gå til attraction list</a>
+
+    <footer>
+        <nav>
+            <br><br/>
+            <Strong>Contact information: </Strong>
+            <p>Hannibal Ussing-Widholm: Hannibal@ussing.com</p>
+            <p>Jonas Nilket: Nilket@gmail.com</p>
+            <p>Joakim Rosdal: Rosdal@gmail.com</p>
+        </nav>
+    </footer>
+</body>

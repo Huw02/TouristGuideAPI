@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/main.css?v=0.07}" href="/css/main.css">
+    <title>Tourist Attractions</title>
+</head>
+<body>
+<header>
+    <h1>Tourist Attractions in Copenhagen</h1>
+    <div class="headerdiv">
+        <div class="dropdown">
+            <button class="dropbtn">Menu</button>
+            <div class="dropdown-content">
+                <a th:href="@{/add}">Suggestion</a>
+                <a th:href="@{/attractionsList}">List of attractions</a>
+                <a th:each="attraction : ${attractions}"
+                   th:href="@{/attractions/{name}(name=${attraction.name})}"
+                   th:text="${attraction.name}">
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+</header>
+
+<div class="headline-image">
+    <img class="img" src="/images/TouristGuideAPIBanner.png" alt="Tivoli, DR Byen, Den Lille Havfrue & Nyhavn">
+    <div class="headline-overlay">
+        <h2>Where Dreams Become Reality!</h2>
+    </div>
+</div>
+
+<article class="attractions-grid">
+    <div th:each="items : ${attractions}" class="attraction-card">
+        <h3 th:text="${items.name}"></h3>
+        <p th:text="${items.description}"></p>
+    </div>
+</article>
+<nav class="packing-list">
+    <h3>Remember to Pack:</h3>
+    <ul>
+        <li><span>🧥</span> Raincoat – It can rain a lot</li>
+        <li><span>💰</span> Cash – Some places don't take credit cards</li>
+        <li><span>👟</span> Comfortable shoes – You’ll walk a lot</li>
+        <li><span>😊</span> A nice smile – Danes like to smile back</li>
+    </ul>
+</nav>
+
+
+<footer>
+    <nav>
+        <br><br/>
+        <Strong>Contact information:</Strong>
+        <p>Hannibal Ussing-Widholm: Hannibal@ussing.com</p>
+        <p>Jonas Nilket: Nilket@gmail.com</p>
+        <p>Joakim Rosdal: Rosdal@gmail.com</p>
+    </nav>
+</footer>
+
+</body>
+</html>

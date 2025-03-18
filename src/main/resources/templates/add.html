@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/addStyle.css?v=0.01}" href="/css/addStyle.css">
+    <title>Tourist Attractions user suggestion</title>
+</head>
+<body>
+<header>
+    <h1 align="center">Tourist attractions in Copenhagen</h1>
+</header>
+<br>
+<form action="#" th:action="@{/add}" th:object="${attraction}" method="post">
+    <fieldset align="center">
+        <legend>Fil out the form:</legend>
+
+
+            <label for="name">Name of attraction:</label>
+            <textarea id="name" name="name" required></textarea>
+            <br>
+
+            <label for="description">Description of attraction:</label>
+            <textarea id="description" name="description" required></textarea>
+
+
+        <p>
+            <label for="city">City:</label>
+            <select id="city" name="city" th:field="*{by}">
+                <option th:each="by : ${city}" th:value="${by}" th:text="${by.displayName}">City</option>
+            </select>
+        </p>
+        <br>
+        <fieldset>
+            <legend>Tags:</legend>
+            <label for="tags"></label>
+            <div id="tags" th:each="tags : ${tags}">
+                <input type=checkbox th:field="*{tags}" th:value="${tags}" ><span th:text="${tags.displayName}"></span>
+            </div>
+        </fieldset>
+
+
+
+    </fieldset>
+    <button th:href="@{saveAttractions.html}" type="submit">Submit</button>
+
+</form>
+<a th:href="@{/attractions}">Gå til forsiden</a>
+
+
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/saveStyle.css?v=0.01}" href="/css/saveStyle.css">
+    <title>Tourist attraction suggestion</title>
+</head>
+<body>
+<header align="center">
+    <h1>These are the submitted attractions from our users:</h1>
+</header>
+<br>
+    <article>
+        <div th:each = "attr : ${attractions}">
+            <p>Name of the attraction:</p>
+            <p th:text ="${attr.getName()}"></p> Description:
+            <p th:text ="${attr.getDescription()}"></p> City:
+            <p th:text ="${attr.getBy()}"></p> Tags associated with the attraction:
+            <p th:text ="${attr.getTags()}"></p>
+            <br>
+
+        </div>
+    </article>
+<a th:href="@{/attractions}">Gå til forsiden</a>
+
+
+
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/attractionStyle.css?v=0.01}" href="/css/main.css">
+    <title>Tourist Attraction</title>
+</head>
+<body>
+
+<div th:each="attraction : ${attractionsByName}">
+  <h2 th:text="${attraction.name}"></h2>
+  <img th:if="${attraction.name == 'Tivoli'}" th:src="@{/images/tivoli.jpeg}" alt="Billede af Tivoli" width="800px">
+<img th:if="${attraction.name == 'DR Byen'}" th:src="@{/images/drbyen.jpg}" alt="Billede af DR byen" width="800px">
+    <img th:if="${attraction.name == 'Nyhavn'}" th:src="@{/images/nyhavn.jpeg}" alt="Billede af Nyhavn" width="800px">
+    <img th:if="${attraction.name == 'Den Lille Havfrue'}" th:src="@{/images/denlillehavfrue.jpg}" alt="Billede af Den Lille Havfrue" width="800px">
+    <h3>Description:</h3>
+    <p th:text="${attraction.description}"></p>
+    <h3>City:</h3>
+    <p th:text="${attraction.getBy}"></p>
+    <h3>Tags:</h3>
+    <p th:text="${attraction.getTags}"></p>
+
+</div>
+<a th:href="@{/attractions}">Gå til forsiden</a>
+
+
+</body>
+</html>

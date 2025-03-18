@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/editStyle.css?v=0.01}" href="/css/editStyle.css">
+
+    <title>Edit an attraction</title>
+</head>
+<body>
+<form action="#" th:action="@{/edit}" th:object="${attraction}" method="post">
+    <fieldset align="center">
+        <legend>Fil out the form:</legend>
+
+
+        <label for="name">Name of attraction:</label>
+        <textarea id="name" name="name" readonly th:text="${attraction.name}"></textarea>
+        <br>
+
+        <label for="description">Description of attraction:</label>
+        <textarea id="description" name="description" th:text="${attraction.description}"></textarea>
+
+
+        <p>
+            <label for="city">City:</label>
+            <select id="city" name="city" th:field="*{by}">
+                <option th:each="by : ${city}" th:value="${by}" th:text="${by.displayName}">City</option>
+            </select>
+        </p>
+        <br>
+        <fieldset>
+            <legend>Tags:</legend>
+            <label for="tags"></label>
+            <div id="tags" th:each="tags : ${tags}">
+                <input type=checkbox th:field="*{tags}" th:value="${tags}" ><span th:text="${tags.displayName}"></span>
+            </div>
+        </fieldset>
+
+
+
+    </fieldset>
+    <button th:href="@{/attractionsList}" type="submit">Submit</button>
+
+</form>
+<a th:href="@{/attractions}">Gå til forsiden</a>
+
+<footer>
+    <nav>
+        <br><br/>
+        <Strong>Contact information: </Strong>
+        <p>Hannibal Ussing-Widholm: Hannibal@ussing.com</p>
+        <p>Jonas Nilket: Nilket@gmail.com</p>
+        <p>Joakim Rosdal: Rosdal@gmail.com</p>
+    </nav>
+</footer>
+
+</body>
+</html>

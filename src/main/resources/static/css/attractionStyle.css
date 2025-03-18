@@ -1,0 +1,37 @@
+body {
+    font-family: Calibri, serif;
+    margin: 40px;
+    padding: 20px;
+    background-color: white;
+    color: grey;
+}
+
+h2 {
+    color: black;
+    border-bottom: 2px solid cornflowerblue;
+    font-size: 24px;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+}
+
+p {
+    font-size: 16px;
+    line-height: 1.6;
+    max-width: 600px;
+}
+
+img {
+    float: right;
+    margin-left: 20px;
+    border-radius: 10px;
+}
+a {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: cornflowerblue;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: 0.3s;
+}

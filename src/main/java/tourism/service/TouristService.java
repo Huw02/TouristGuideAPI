@@ -3,6 +3,7 @@ package tourism.service;
 import org.springframework.stereotype.Service;
 import tourism.model.OldTags;
 import tourism.model.OldTouristAttraction;
+import tourism.model.TouristAttraction;
 import tourism.repository.TouristRepository;
 
 import java.util.List;
@@ -19,8 +20,8 @@ public class TouristService {
         return touristRepository.getTags(name);
     }
 
-    public List<OldTouristAttraction> getAttractions() {
-        return touristRepository.getAttractions();
+    public List<TouristAttraction> getAttractions() {
+        return touristRepository.getAllTouristAttractions();
     }
 
     public OldTouristAttraction getAttractionsByName(String name) {

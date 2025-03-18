@@ -18,6 +18,7 @@ public class TouristRepository {
     private JdbcTemplate jdbcTemplate;
 
 
+
     public TouristRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate =new JdbcTemplate();
     }

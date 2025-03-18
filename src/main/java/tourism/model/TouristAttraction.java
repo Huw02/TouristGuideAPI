@@ -3,6 +3,7 @@ package tourism.model;
 import java.util.List;
 
 public class TouristAttraction {
+    private int id;
     private String name;
     private String description;
     private List<Tags> tags;
@@ -11,26 +12,20 @@ public class TouristAttraction {
 
 
 
-    public TouristAttraction(String name, String description, List<Tags> tags, Byer by) {
+
+    public TouristAttraction(int id, String name, String description, List<Tags> tags, Byer by) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.tags = tags;
         this.by = by;
-
 
     }
 
     public TouristAttraction() {
     }
 
-    public List<Tags> getTags() {
-        return tags;
-    }
 
-
-    public Byer getBy() {
-        return by;
-    }
 
     public String getName() {
         return name;
@@ -48,11 +43,27 @@ public class TouristAttraction {
         this.description = description;
     }
 
-    public void setBy(Byer by) {
-        this.by = by;
+    public List<Tags> getTags() {
+        return tags;
     }
 
     public void setTags(List<Tags> tags) {
         this.tags = tags;
+    }
+
+    public Byer getBy() {
+        return by;
+    }
+
+    public void setBy(Byer by) {
+        this.by = by;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

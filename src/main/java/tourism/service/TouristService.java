@@ -1,8 +1,8 @@
 package tourism.service;
 
 import org.springframework.stereotype.Service;
-import tourism.model.Tags;
-import tourism.model.TouristAttraction;
+import tourism.model.OldTags;
+import tourism.model.OldTouristAttraction;
 import tourism.repository.TouristRepository;
 
 import java.util.List;
@@ -15,42 +15,42 @@ public class TouristService {
         this.touristRepository = touristRepository;
     }
 
-    public List<Tags> getTags(String name) {
+    public List<OldTags> getTags(String name) {
         return touristRepository.getTags(name);
     }
 
-    public List<TouristAttraction> getAttractions() {
+    public List<OldTouristAttraction> getAttractions() {
         return touristRepository.getAttractions();
     }
 
-    public TouristAttraction getAttractionsByName(String name) {
+    public OldTouristAttraction getAttractionsByName(String name) {
         return touristRepository.getAttractionsByName(name);
     }
 
-    public TouristRepository setAttractions(List<TouristAttraction> attractions) {
+    public TouristRepository setAttractions(List<OldTouristAttraction> attractions) {
         touristRepository.setAttractions(attractions);
         return touristRepository;
     }
 
-    public TouristAttraction addAttractions(TouristAttraction touristAttraction) {
+    public OldTouristAttraction addAttractions(OldTouristAttraction touristAttraction) {
         touristRepository.addAttractions(touristAttraction);
         return touristAttraction;
     }
 
-    public void updateAttraction(TouristAttraction touristAttraction) {
+    public void updateAttraction(OldTouristAttraction touristAttraction) {
         touristRepository.updateAttraction(touristAttraction);
     }
 
-    public TouristAttraction getAttractionByName(String name) {
+    public OldTouristAttraction getAttractionByName(String name) {
         return touristRepository.getAttractionByName(name);
     }
 
-    public TouristAttraction removeAttraction(String name) {
+    public OldTouristAttraction removeAttraction(String name) {
         return touristRepository.removeAttraction(name);
     }
 
 
-    public List<TouristAttraction>getAttractionsDatabase(){
+    public List<OldTouristAttraction>getAttractionsDatabase(){
         return touristRepository.getAttractionsDatabase();
     }
 }

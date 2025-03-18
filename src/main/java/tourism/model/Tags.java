@@ -1,24 +1,28 @@
 package tourism.model;
 
-public enum Tags {
-    FORLYSTELSESPARK("Forlystelsespark"),
-    KUNST("Kunst"),
-    MUSEUM("Museum"),
-    KONCERT("Koncert"),
-    KULTUR("Kultur"),
-    UNDERHOLDNING("Underholdning"),
-    RESTAURANT("Restaurant"),
-    BØRNEVENLIG("Børnevenlig"),
-    GRATIS("Gratis"),
-    NATUR("Natur");
+public class Tags {
+    public String tagName;
+    public int tagId;
 
-    private String displayName;
 
-    Tags(String displayName) {
-        this.displayName = displayName;
+    public Tags(String tagName, int tagId) {
+        this.tagName = tagName;
+        this.tagId = tagId;
     }
 
-    public String getDisplayName() {
-        return displayName;
+    public String getTagName() {
+        return tagName;
+    }
+
+    public void setTagName(String tagName) {
+        this.tagName = tagName;
+    }
+
+    public int getTagId() {
+        return tagId;
+    }
+
+    public void setTagId(int tagId) {
+        this.tagId = tagId;
     }
 }

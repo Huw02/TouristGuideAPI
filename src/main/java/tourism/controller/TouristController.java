@@ -4,9 +4,9 @@ package tourism.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import tourism.model.Byer;
-import tourism.model.Tags;
-import tourism.model.TouristAttraction;
+import tourism.model.OldByer;
+import tourism.model.OldTags;
+import tourism.model.OldTouristAttraction;
 import tourism.service.TouristService;
 
 
@@ -33,16 +33,16 @@ public class TouristController {
 
     @GetMapping("/add")
     public String addTouristAttraction(Model model) {
-        TouristAttraction attraction = new TouristAttraction();
-        attraction.setBy(Byer.KØBENHAVN);
+        OldTouristAttraction attraction = new OldTouristAttraction();
+        attraction.setBy(OldByer.KØBENHAVN);
         model.addAttribute("attraction", attraction);
-        model.addAttribute("city", Byer.values());
-        model.addAttribute("tags", Tags.values());
+        model.addAttribute("city", OldByer.values());
+        model.addAttribute("tags", OldTags.values());
         return "add";
     }
 
     @PostMapping("/add")
-    public String save(@ModelAttribute TouristAttraction touristAttraction) {
+    public String save(@ModelAttribute OldTouristAttraction touristAttraction) {
         touristService.addAttractions(touristAttraction);
         return "redirect:/save";
     }
@@ -56,25 +56,25 @@ public class TouristController {
     @GetMapping("/attractionsList")
     public String attractionsList(Model model) {
         model.addAttribute("attractionsList", touristService.getAttractions());
-        model.addAttribute("touristAttraction", new TouristAttraction());
+        model.addAttribute("touristAttraction", new OldTouristAttraction());
         return "attractionsList";
     }
 
     @GetMapping("/attractions/edit/{name}")
     public String editAttraction(@PathVariable String name, Model model) {
-        TouristAttraction touristAttraction = touristService.getAttractionByName(name);
+        OldTouristAttraction touristAttraction = touristService.getAttractionByName(name);
         if (touristAttraction.getName() == null) {
             throw new IllegalArgumentException("Id not found");
         }
         model.addAttribute("attraction", touristAttraction);
-        model.addAttribute("city", Byer.values());
-        model.addAttribute("tags", Tags.values());
+        model.addAttribute("city", OldByer.values());
+        model.addAttribute("tags", OldTags.values());
 
         return "editAttraction";
     }
 
     @PostMapping("/edit")
-    public String postEditAttraction(@ModelAttribute TouristAttraction touristAttraction) {
+    public String postEditAttraction(@ModelAttribute OldTouristAttraction touristAttraction) {
         touristService.updateAttraction(touristAttraction);
         return "redirect:/attractionsList";
     }

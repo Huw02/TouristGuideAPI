@@ -66,4 +66,8 @@ public class TouristAttraction {
     public void setId(int id) {
         this.id = id;
     }
+
+    public String seBy(){
+        return "" + getBy();
+    }
 }

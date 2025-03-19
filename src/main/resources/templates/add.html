@@ -26,7 +26,7 @@
         <p>
             <label for="city">City:</label>
             <select id="city" name="city" th:field="*{by}">
-                <option th:each="by : ${city}" th:value="${by}" th:text="${by.displayName}">City</option>
+                <option th:each="by : ${city}" th:value="${by}" th:text="${by.getByName()}">City</option>
             </select>
         </p>
         <br>
@@ -34,7 +34,7 @@
             <legend>Tags:</legend>
             <label for="tags"></label>
             <div id="tags" th:each="tags : ${tags}">
-                <input type=checkbox th:field="*{tags}" th:value="${tags}" ><span th:text="${tags.displayName}"></span>
+                <input type=checkbox th:field="*{tags}" th:value="${tags}" ><span th:text="${tags.getTagName()}"></span>
             </div>
         </fieldset>
 

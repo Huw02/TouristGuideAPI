@@ -1,6 +1,7 @@
 package tourism.service;
 
 import org.springframework.stereotype.Service;
+import tourism.DTO.DTOTouristAttraction;
 import tourism.model.*;
 import tourism.repository.TouristRepository;
 
@@ -40,9 +41,11 @@ public class TouristService {
         return touristAttraction;
     }
 
-    public void updateAttraction(TouristAttraction touristAttraction) {
-        touristRepository.updateTouristAttraction(touristAttraction);
+    public TouristAttraction updateTouristAttraction(TouristAttraction touristAttraction) {
+        return touristRepository.updateTouristAttraction(touristAttraction);
     }
+
+
 
     public OldTouristAttraction getAttractionByName(String name) {
         return touristRepository.getAttractionByName(name);
@@ -53,9 +56,7 @@ public class TouristService {
     }
 
 
-    public List<OldTouristAttraction>getAttractionsDatabase(){
-        return touristRepository.getAttractionsDatabase();
-    }
+
 
     public List<Tags>getAllTags(){
         return touristRepository.getAllTags();
@@ -65,13 +66,36 @@ public class TouristService {
         return touristRepository.getAllbyer();
     }
 
+
+    public int getById(String name){
+        return touristRepository.getById(name);
+    }
+    public Byer getByerById(int id){
+        return touristRepository.getByerById(id);
+    }
+
+
     public List<Tags>getTagsByName(String name){
         return touristRepository.getTagsForAttraction(touristRepository.getTouristAttractionByName(name).getId());
     }
 
+    public Tags getTagsById(int id){
+        return touristRepository.getTagById(id);
+    }
+
+
 
     public TouristAttraction getTouristAttractionByName(String name){
         return touristRepository.getTouristAttractionByName(name);
+    }
+
+    /*
+    public DTOTouristAttraction getDTOTouristAttractionByName(String name){
+        return touristRepository.getDTOTouristAttractionByName(name);
+    } */
+
+    public List<Tags> getTagWithOldTags(List<OldTags> oldTags){
+        return touristRepository.getTagsWithOldTags(oldTags);
     }
 
 }

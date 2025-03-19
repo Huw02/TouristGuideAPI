@@ -15,7 +15,7 @@
         <table>
         <tr th:each=" tags : ${touristAttraction}">
 
-            <td th:text="${tags.getDisplayName}"></td>
+            <td th:text="${tags.getTagName()}"></td>
         </tr>
         </table>
 

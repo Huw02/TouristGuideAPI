@@ -5,6 +5,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Repository;
+import tourism.DTO.DTOTouristAttraction;
 import tourism.model.*;
 import tourism.rowMappers.ByerRowMapper;
 import tourism.rowMappers.TagsRowMapper;
@@ -19,9 +20,24 @@ public class TouristRepository {
     private JdbcTemplate jdbcTemplate;
 
 
+    @Value("${spring.datasource.url}")
+    String url;
+    @Value("${spring.datasource.username}")
+    String username;
+    @Value("${spring.datasource.password}")
+    String password;
 
-    public TouristRepository(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate =new JdbcTemplate();
+
+
+    public TouristRepository() {
+        DriverManagerDataSource dataSource = new DriverManagerDataSource(
+                System.getenv("PROD_DATABASE_URL"),
+                System.getenv("PROD_USERNAME"),
+                System.getenv("PROD_PASSWORD")
+        );
+
+        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
     public List<OldTouristAttraction> getAttractions() {
@@ -187,15 +203,39 @@ public class TouristRepository {
     public TouristAttraction getTouristAttractionByName(String name){
         String sql ="SELECT attractions.*, byer.byer " +
                 "FROM attractions JOIN byer " +
-                "ON attractions.ByerID = byer.byerID" +
+                "ON attractions.ByerID = byer.byerID " +
                 "WHERE name = ?";
         List<TouristAttraction> listOfTouristAttractions = jdbcTemplate.query(sql, new TouristAttractionRowMapper(), name);
         if(listOfTouristAttractions.isEmpty()){
             return null;
-        } else {
-            return listOfTouristAttractions.getFirst();
         }
+
+        TouristAttraction touristAttraction = listOfTouristAttractions.getFirst();
+        touristAttraction.setTags(getTagsForAttraction(touristAttraction.getId()));
+
+        return touristAttraction;
     }
+
+
+
+    /*
+    public DTOTouristAttraction getDTOTouristAttractionByName(String name){
+        String sql ="SELECT attractions.*, byer.byer " +
+                "FROM attractions JOIN byer " +
+                "ON attractions.ByerID = byer.byerID " +
+                "WHERE name = ?";
+        List<TouristAttraction> listOfTouristAttractions = jdbcTemplate.query(sql, new TouristAttractionRowMapper(), name);
+        List<DTOTouristAttraction>tempDTO = new ArrayList<>();
+        for(TouristAttraction i: listOfTouristAttractions){
+            tempDTO.add(new DTOTouristAttraction(i.getName(), i.getDescription(), i.getBy().getByName(), ));
+
+        }
+        if(tempDTO.isEmpty()){
+            return null;
+        } else {
+            return tempDTO.getFirst();
+        }
+    } */
 
 
     public void deleteTouristAttraction(String name){
@@ -204,10 +244,26 @@ public class TouristRepository {
     }
 
     public TouristAttraction updateTouristAttraction(TouristAttraction touristAttraction){
-        String sql ="UPDATE attractions SET(name, beskrivelse, byerID) VALUES (?, ?, ?) WHERE attractions id=?";
+        String deleteTags = "DELETE FROM attractions_tags where attractionsID = ?";
+        jdbcTemplate.update(deleteTags, touristAttraction.getId());
+
+        String insertTags = "INSERT INTO attractions_tags (attractionsID, tagsID) VALUES (?, ?)";
+        for(Tags i: touristAttraction.getTags()){
+            jdbcTemplate.update(insertTags, touristAttraction.getId(), i.getTagId());
+        }
+        String sql = "UPDATE attractions SET name = ?, beskrivelse = ?, byerID = ? WHERE AttractionsID = ?";
         jdbcTemplate.update(sql, touristAttraction.getName(), touristAttraction.getDescription(), touristAttraction.getBy().getById(), touristAttraction.getId());
         return touristAttraction;
+    }
 
+
+
+
+    public DTOTouristAttraction updateDTOAttraction(DTOTouristAttraction dtoTouristAttraction){
+        String sql ="UPDATE attractions SET(name, beskrivelse, byerID) VALUES (?, ?, ?) WHERE attractions id=?";
+        int tempById = getById(dtoTouristAttraction.getName());
+        jdbcTemplate.update(sql, dtoTouristAttraction.getName(), dtoTouristAttraction.getDescription(), tempById);
+        return dtoTouristAttraction;
     }
 
 
@@ -230,6 +286,16 @@ public class TouristRepository {
             return null;
         } else {
             return listOfByer.getFirst();
+        }
+    }
+
+    public int getById(String name){
+        String sql = "SELECT ByerId from byer where byer = ?";
+        List<Byer> listOfByer = jdbcTemplate.query(sql, new ByerRowMapper(), name);
+        if(listOfByer.isEmpty()){
+            return 0;
+        } else {
+            return listOfByer.getFirst().getById();
         }
     }
 
@@ -296,11 +362,19 @@ public class TouristRepository {
     }
 
     public List<Tags> getTagsForAttraction(int id){
-        String sql= "SELECT tags.TagsID, tags.tags from attractions" +
-                "JOIN attractions_tags ON attractions.AttractionsID = attractions_tags.AttractionsID" +
-                "JOIN tags on tags.tagsid = attractions_tags.tagsid" +
-                "WHERE attractions.AttractionsID = ?";
+        String sql= "SELECT tags.TagsID, tags.tags from attractions JOIN attractions_tags ON attractions.AttractionsID = attractions_tags.AttractionsID JOIN tags on tags.tagsid = attractions_tags.tagsid WHERE attractions.AttractionsID = ?";
         List<Tags> listOfTags = jdbcTemplate.query(sql, new TagsRowMapper(), id);
+        return listOfTags;
+    }
+
+
+    public List<Tags> getTagsWithOldTags(List<OldTags> oldTags){
+        List<String> tempList = new ArrayList<>();
+        for(OldTags i: oldTags){
+            tempList.add(i.getDisplayName());
+        }
+        String sql = "SELECT * FROM tags WHERE tags = ?";
+        List<Tags> listOfTags = jdbcTemplate.query(sql, new TagsRowMapper(), tempList);
         return listOfTags;
     }
 

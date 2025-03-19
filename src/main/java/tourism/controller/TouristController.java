@@ -4,8 +4,12 @@ package tourism.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import tourism.DTO.DTOTouristAttraction;
 import tourism.model.*;
 import tourism.service.TouristService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Controller
@@ -41,8 +45,9 @@ public class TouristController {
     }
 
     @PostMapping("/add")
-    public String save(@ModelAttribute OldTouristAttraction touristAttraction) {
-        touristService.addAttractions(touristAttraction);
+    public String save(@ModelAttribute TouristAttraction touristAttraction) {
+        //touristService.addAttractions(touristAttraction);
+
         return "redirect:/save";
     }
 
@@ -55,13 +60,14 @@ public class TouristController {
     @GetMapping("/attractionsList")
     public String attractionsList(Model model) {
         model.addAttribute("attractionsList", touristService.getAttractions());
-        model.addAttribute("touristAttraction", new OldTouristAttraction());
+        //model.addAttribute("touristAttraction", new DTOTouristAttraction());
         return "attractionsList";
     }
 
     @GetMapping("/attractions/edit/{name}")
     public String editAttraction(@PathVariable String name, Model model) {
         TouristAttraction touristAttraction = touristService.getTouristAttractionByName(name);
+
         if (touristAttraction.getName() == null) {
             throw new IllegalArgumentException("Id not found");
         }
@@ -73,20 +79,42 @@ public class TouristController {
     }
 
     @PostMapping("/edit")
-    public String postEditAttraction(@ModelAttribute TouristAttraction touristAttraction) {
-        touristService.updateAttraction(touristAttraction);
+    public String postEditAttraction(@ModelAttribute DTOTouristAttraction dtotouristAttraction) {
+
+        TouristAttraction touristAttraction = new TouristAttraction();
+        touristAttraction.setId(dtotouristAttraction.getId());
+        touristAttraction.setName(dtotouristAttraction.getName());
+        touristAttraction.setDescription(dtotouristAttraction.getDescription());
+        Byer tempBy = touristService.getByerById(dtotouristAttraction.getId());
+        touristAttraction.setBy(tempBy);
+
+
+
+        List<Integer> tempList = dtotouristAttraction.getTagsId();
+        List<Tags> tagsList = new ArrayList<>();
+
+        if(tempList != null){
+            for(int i: tempList){
+                tagsList.add(touristService.getTagsById(i));
+            }
+        }
+
+        touristAttraction.setTags(tagsList);
+
+        touristService.updateTouristAttraction(touristAttraction);
+
         return "redirect:/attractionsList";
     }
 
     @GetMapping("/attractions/tags/{name}")
     public String tags(Model model, @PathVariable String name) {
-        model.addAttribute("touristAttraction", touristService.getTags(name));
+        model.addAttribute("touristAttraction", touristService.getTagsByName(name));
         return "tags";
     }
 
     @PostMapping("/attractions/delete/{name}")
     public String removeAttraction(@PathVariable String name) {
-        touristService.getTagsByName(name);
+        touristService.removeAttraction(name);
         return "redirect:/attractionsList";
     }
 }

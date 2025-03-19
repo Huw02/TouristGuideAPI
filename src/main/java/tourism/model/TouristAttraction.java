@@ -10,9 +10,6 @@ public class TouristAttraction {
     private Byer by;
 
 
-
-
-
     public TouristAttraction(int id, String name, String description, List<Tags> tags, Byer by) {
         this.id = id;
         this.name = name;
@@ -24,7 +21,6 @@ public class TouristAttraction {
 
     public TouristAttraction() {
     }
-
 
 
     public String getName() {
@@ -67,7 +63,18 @@ public class TouristAttraction {
         this.id = id;
     }
 
+    public String seTags() {
+        String list = "";
+        if (tags != null) {
+            for (Tags i : tags) {
+                list = i.tagName;
+            }
+            return list;
+        }
+        return null;
+    }
+
     public String seBy(){
-        return "" + getBy();
+        return by.getByName();
     }
 }

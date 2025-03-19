@@ -12,14 +12,19 @@
 <br>
     <article>
         <div th:each = "attr : ${attractions}">
+            <br>
             <p>Name of the attraction:</p>
-            <p th:text ="${attr.getName()}"></p> Description:
-            <p th:text ="${attr.getDescription()}"></p> City:
-            <p th:text ="${attr.getBy()}"></p> Tags associated with the attraction:
-            <p th:text ="${attr.getTags()}"></p>
+            <p th:text ="${attr.getName()}"></p>
+            <br>
+            <p>Description</p>
+            <p th:text ="${attr.getDescription()}"></p>
+            <br>
+            <p>City:</p>
+            <p th:text="${attr.getBy().getByName()}"></p>
             <br>
 
         </div>
+
     </article>
 <a th:href="@{/attractions}">Gå til forsiden</a>
 

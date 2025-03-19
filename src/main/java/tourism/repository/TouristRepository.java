@@ -3,6 +3,8 @@ package tourism.repository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Repository;
 import tourism.DTO.DTOTouristAttraction;
@@ -11,12 +13,13 @@ import tourism.rowMappers.ByerRowMapper;
 import tourism.rowMappers.TagsRowMapper;
 import tourism.rowMappers.TouristAttractionRowMapper;
 
+import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository
 public class TouristRepository {
-    private List<OldTouristAttraction> attractions = new ArrayList<>();
     private JdbcTemplate jdbcTemplate;
 
 
@@ -40,116 +43,8 @@ public class TouristRepository {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-    public List<OldTouristAttraction> getAttractions() {
-        return attractions;
-    }
-
-    public List<OldTags> getTags(String name) {
-        for (OldTouristAttraction attraction : attractions) {
-            if (attraction.getName().equalsIgnoreCase(name)) {
-                return attraction.getTags();
-            }
-        }
-        return null;
-    }
-
-    public void addStarterAttractions() {
-        attractions.add((new OldTouristAttraction("Tivoli", "Tivoli er den suverænt mest besøgte turistattraktion i Danmark med 2,3 mio. besøgende i 2021. Parken er Europas fjerdemest besøgte forlystelsespark", List.of(OldTags.FORLYSTELSESPARK, OldTags.UNDERHOLDNING, OldTags.KONCERT, OldTags.KULTUR, OldTags.RESTAURANT), OldByer.KØBENHAVN)));
-        attractions.add((new OldTouristAttraction("DR Byen", "DR Byen er hovedkvarteret for Danmarks Radio (DR) og et imponerende mediehus i København. Bygningen består af fire segmenter, der huser DR's tv- og radioproduktion, nyheder og koncerthuset. DR Koncerthuset, designet af arkitekten Jean Nouvel, er en af Europas mest anerkendte koncertsale med fantastisk akustik og et futuristisk udseende.", List.of(OldTags.GRATIS, OldTags.KONCERT, OldTags.UNDERHOLDNING), OldByer.KØBENHAVN)));
-        attractions.add((new OldTouristAttraction("Den Lille Havfrue", "Inspireret af H.C. Andersens eventyr, denne lille, men berømte bronzestatue sidder på en sten ved Langelinie. Selvom den ofte kaldes skuffende lille af turister, er den stadig et must-see og en af Københavns mest kendte vartegn.", List.of(OldTags.KUNST, OldTags.KULTUR, OldTags.GRATIS), OldByer.KØBENHAVN)));
-        attractions.add((new OldTouristAttraction("Nyhavn", "Den ikoniske havnepromenade med farverige bygninger, hyggelige restauranter og gamle træskibe. Nyhavn var engang hjem for forfatteren H.C. Andersen og er i dag et af de mest fotograferede steder i København. Perfekt til en gåtur langs vandet eller en bådtur i kanalerne.", List.of(OldTags.GRATIS, OldTags.RESTAURANT, OldTags.BØRNEVENLIG), OldByer.KØBENHAVN)));
-    }
-
-    public OldTouristAttraction getAttractionsByName(String name) {
-        for (OldTouristAttraction attraction : attractions) {
-            if (attraction.getName().equalsIgnoreCase(name)) {
-                return attraction;
-            }
-        }
-        return null;
-    }
-
-    public void setAttractions(List<OldTouristAttraction> attractions) {
-        this.attractions = attractions;
-    }
-
-    public OldTouristAttraction addAttractions(OldTouristAttraction touristAttraction) {
-        attractions.add(touristAttraction);
-        return touristAttraction;
-    }
 
 
-    public void updateAttraction(OldTouristAttraction nyAttraction) {
-        for (OldTouristAttraction attraction : attractions) {
-            if (attraction.getName().equals(nyAttraction.getName())) {
-                attraction.setName(nyAttraction.getName());
-                attraction.setBy(nyAttraction.getBy());
-                attraction.setDescription(nyAttraction.getDescription());
-                attraction.setTags(nyAttraction.getTags());
-            }
-        }
-    }
-
-    public OldTouristAttraction getAttractionByName(String name) {
-        for (OldTouristAttraction attraction : attractions) {
-            if (attraction.getName().equalsIgnoreCase(name)) {
-                return attraction;
-            }
-        }
-        return null;
-    }
-
-    public OldTouristAttraction removeAttraction(String name) {
-        OldTouristAttraction tempAttraction = null;
-        for (OldTouristAttraction attraction : attractions) {
-            if (attraction.getName().equalsIgnoreCase(name)) {
-                tempAttraction = attraction;
-                attractions.remove(attraction);
-                return tempAttraction;
-            }
-        }
-        return tempAttraction;
-    }
-
-
-    //metoder til at hente og indsætte data i databasen
-
-
-    public List<OldTouristAttraction> getAttractionsDatabase(){
-        List<OldTouristAttraction> listOfAttractions = new ArrayList<>();
-
-
-        SqlRowSet rowSet =jdbcTemplate.queryForRowSet("SELECT * FROM attractions");
-
-        while(rowSet.next()){
-            List<OldTags> listOfTags = new ArrayList<>();
-            int attractionsID =rowSet.getInt("attractionsID");
-            String name = rowSet.getString("name");
-            String description = rowSet.getString("beskrivelse");
-            String byerID = rowSet.getString("ByerID");
-
-
-            String by = "" + jdbcTemplate.queryForRowSet("SELECT Byer FROM byer WHERE ByerID VALUES (?)", byerID);
-            OldByer byName = OldByer.valueOf(by);
-
-            SqlRowSet attractions_tags =jdbcTemplate.queryForRowSet("SELECT tagsID FROM attractions_tags WHERE AttractionsID VALUES(?)", attractionsID);
-            while(attractions_tags.next()){
-                int tagsID = attractions_tags.getInt("TagsID");
-                SqlRowSet tags =jdbcTemplate.queryForRowSet("SELECT tags FROM tags WHERE tagsID VALUES(?)", tagsID);
-                while(tags.next()){
-                    String tagsName = tags.getString("tags");
-                    OldTags oldTagsEnumName = OldTags.valueOf(tagsName);
-                    listOfTags.add(oldTagsEnumName);
-                }
-
-            }
-
-            listOfAttractions.add(new OldTouristAttraction(name, description, listOfTags, byName));
-
-        }
-
-        return listOfAttractions;
-    }
 
     public void insertAttraction(String name, String description, OldByer by){
         String sql ="INSERT INTO attraction (name, description, by) VALUES ? ? ?";
@@ -157,16 +52,7 @@ public class TouristRepository {
 
     }
 
-    public void deleteAttraction(int attractionId){
-        String sql = "DELETE FROM attraction WHERE attractionId = ?";
-        jdbcTemplate.update(sql, attractionId);
-    }
 
-
-    public void updateAttraction(String name, String description, OldByer by, int attractionId){
-        String sql = "UPDATE attraction SET name = ?, description = ?, by = ? WHERE attractionId = ?";
-        jdbcTemplate.update(sql, name, description, by, attractionId);
-    }
 
 
 
@@ -218,30 +104,16 @@ public class TouristRepository {
 
 
 
-    /*
-    public DTOTouristAttraction getDTOTouristAttractionByName(String name){
-        String sql ="SELECT attractions.*, byer.byer " +
-                "FROM attractions JOIN byer " +
-                "ON attractions.ByerID = byer.byerID " +
-                "WHERE name = ?";
-        List<TouristAttraction> listOfTouristAttractions = jdbcTemplate.query(sql, new TouristAttractionRowMapper(), name);
-        List<DTOTouristAttraction>tempDTO = new ArrayList<>();
-        for(TouristAttraction i: listOfTouristAttractions){
-            tempDTO.add(new DTOTouristAttraction(i.getName(), i.getDescription(), i.getBy().getByName(), ));
-
-        }
-        if(tempDTO.isEmpty()){
-            return null;
-        } else {
-            return tempDTO.getFirst();
-        }
-    } */
 
 
     public void deleteTouristAttraction(String name){
+        String tagsSql = " DELETE FROM attractions_tags WHERE attractionsID = ? ";
+        jdbcTemplate.update(tagsSql, getTouristAttractionByName(name).getId());
+
         String sql = "DELETE FROM attractions WHERE attractionsID = ?";
         jdbcTemplate.update(sql, getTouristAttractionByName(name).getId());
     }
+
 
     public TouristAttraction updateTouristAttraction(TouristAttraction touristAttraction){
         String deleteTags = "DELETE FROM attractions_tags where attractionsID = ?";
@@ -256,15 +128,33 @@ public class TouristRepository {
         return touristAttraction;
     }
 
+    public TouristAttraction addTouristAttraction(TouristAttraction touristAttraction){
+        String sql ="INSERT INTO attractions (name, beskrivelse, byerID) VALUES (?, ?, ?) ";
 
+        KeyHolder keyHolder =new GeneratedKeyHolder();
 
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, touristAttraction.getName());
+            ps.setString(2, touristAttraction.getDescription());
+            ps.setInt(3, touristAttraction.getBy().getById());
+            return ps;
+        }, keyHolder);
 
-    public DTOTouristAttraction updateDTOAttraction(DTOTouristAttraction dtoTouristAttraction){
-        String sql ="UPDATE attractions SET(name, beskrivelse, byerID) VALUES (?, ?, ?) WHERE attractions id=?";
-        int tempById = getById(dtoTouristAttraction.getName());
-        jdbcTemplate.update(sql, dtoTouristAttraction.getName(), dtoTouristAttraction.getDescription(), tempById);
-        return dtoTouristAttraction;
+            int touristId = keyHolder.getKey() !=null ?keyHolder.getKey().intValue(): -1;
+
+            if(touristId != -1){
+                touristAttraction.setId(touristId);
+            }
+
+            String sqlTags = "INSERT INTO attractions_tags (attractionsID, tagsID) VALUES (?, ?)";
+            for(Tags i: touristAttraction.getTags()) {
+                jdbcTemplate.update(sqlTags, touristId, i.getTagId());
+            }
+
+        return touristAttraction;
     }
+
 
 
 
@@ -288,6 +178,14 @@ public class TouristRepository {
             return listOfByer.getFirst();
         }
     }
+
+    public Byer getByWithName(String name){
+        String sql ="SELECT * FROM byer WHERE byerID = ?";
+        int temp = getById(name);
+        jdbcTemplate.query(sql, new ByerRowMapper(), temp);
+        return null;
+    }
+
 
     public int getById(String name){
         String sql = "SELECT ByerId from byer where byer = ?";
@@ -364,17 +262,6 @@ public class TouristRepository {
     public List<Tags> getTagsForAttraction(int id){
         String sql= "SELECT tags.TagsID, tags.tags from attractions JOIN attractions_tags ON attractions.AttractionsID = attractions_tags.AttractionsID JOIN tags on tags.tagsid = attractions_tags.tagsid WHERE attractions.AttractionsID = ?";
         List<Tags> listOfTags = jdbcTemplate.query(sql, new TagsRowMapper(), id);
-        return listOfTags;
-    }
-
-
-    public List<Tags> getTagsWithOldTags(List<OldTags> oldTags){
-        List<String> tempList = new ArrayList<>();
-        for(OldTags i: oldTags){
-            tempList.add(i.getDisplayName());
-        }
-        String sql = "SELECT * FROM tags WHERE tags = ?";
-        List<Tags> listOfTags = jdbcTemplate.query(sql, new TagsRowMapper(), tempList);
         return listOfTags;
     }
 

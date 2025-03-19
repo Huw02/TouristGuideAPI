@@ -16,11 +16,14 @@
     <h3>Description:</h3>
     <p th:text="${attraction.description}"></p>
     <h3>City:</h3>
-    <p th:text="${attraction.seBy()}"></p>
-    <h3>Tags:</h3>
-    <p th:text="${attraction.getTags}"></p>
+    <p th:text="${attraction.getBy().getByName()}"></p>
 
 </div>
+
+    <h3>Tags:</h3>
+    <div th:each="tag : ${tags}" >
+        <p th:text="${tag.getTagName()}"></p>
+    </div>
 <a th:href="@{/attractions}">Gå til forsiden</a>
 
 

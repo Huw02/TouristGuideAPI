@@ -10,7 +10,7 @@
     <h1 align="center">Tourist attractions in Copenhagen</h1>
 </header>
 <br>
-<form action="#" th:action="@{/add}" th:object="${attraction}" method="post">
+<form action="#" th:action="@{/add}" th:object="${dto}" method="post">
     <fieldset align="center">
         <legend>Fil out the form:</legend>
 
@@ -24,17 +24,17 @@
 
 
         <p>
-            <label for="city">City:</label>
-            <select id="city" name="city" th:field="*{by}">
-                <option th:each="by : ${city}" th:value="${by}" th:text="${by.getByName()}">City</option>
+            <label for="tagsId">City:</label>
+            <select id="tagsId" name="city" th:field="*{byId}">
+                <option th:each="by : ${city}" th:value="${by.getById()}" th:text="${by.getByName()}">City</option>
             </select>
         </p>
         <br>
         <fieldset>
             <legend>Tags:</legend>
             <label for="tags"></label>
-            <div id="tags" th:each="tags : ${tags}">
-                <input type=checkbox th:field="*{tags}" th:value="${tags}" ><span th:text="${tags.getTagName()}"></span>
+            <div id="tags" th:each="tag : ${tags}">
+                <input type=checkbox th:field="*{tagsId}" th:value="${tag.getTagId()}" ><span th:text="${tag.getTagName()}"></span>
             </div>
         </fieldset>
 

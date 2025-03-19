@@ -31,22 +31,36 @@ public class TouristController {
     @GetMapping("attractions/{name}")
     public String getAttractionByName(@PathVariable String name, Model model) {
         model.addAttribute("attractionsByName", touristService.getAttractionsByName(name));
+        model.addAttribute("tags", touristService.getTagsByName(name));
         return "attraction";
     }
 
     @GetMapping("/add")
     public String addTouristAttraction(Model model) {
-        TouristAttraction attraction = new TouristAttraction();
-        attraction.setBy(new Byer("København", 33));
-        model.addAttribute("attraction", attraction);
+        model.addAttribute("dto", new DTOTouristAttraction());
         model.addAttribute("city", touristService.getAllByer());
         model.addAttribute("tags", touristService.getAllTags());
         return "add";
     }
 
     @PostMapping("/add")
-    public String save(@ModelAttribute TouristAttraction touristAttraction) {
-        //touristService.addAttractions(touristAttraction);
+    public String save(@ModelAttribute DTOTouristAttraction dtotouristAttraction) {
+        TouristAttraction nytouristAttraction = new TouristAttraction();
+        nytouristAttraction.setName(dtotouristAttraction.getName());
+        nytouristAttraction.setDescription(dtotouristAttraction.getDescription());
+        Byer tempBy = touristService.getByerById(dtotouristAttraction.getById());
+        nytouristAttraction.setBy(tempBy);
+
+        List<Integer> tempList = dtotouristAttraction.getTagsId();
+        List<Tags> tagsList = new ArrayList<>();
+
+        if(tempList != null){
+            for(int i: tempList){
+                tagsList.add(touristService.getTagsById(i));
+            }
+        }
+        nytouristAttraction.setTags(tagsList);
+        touristService.addTouristAttraction(nytouristAttraction);
 
         return "redirect:/save";
     }
@@ -60,18 +74,17 @@ public class TouristController {
     @GetMapping("/attractionsList")
     public String attractionsList(Model model) {
         model.addAttribute("attractionsList", touristService.getAttractions());
-        //model.addAttribute("touristAttraction", new DTOTouristAttraction());
         return "attractionsList";
     }
 
     @GetMapping("/attractions/edit/{name}")
     public String editAttraction(@PathVariable String name, Model model) {
         TouristAttraction touristAttraction = touristService.getTouristAttractionByName(name);
-
         if (touristAttraction.getName() == null) {
             throw new IllegalArgumentException("Id not found");
         }
         model.addAttribute("attraction", touristAttraction);
+        model.addAttribute("dto", new DTOTouristAttraction());
         model.addAttribute("city", touristService.getAllByer());
         model.addAttribute("tags", touristService.getAllTags());
 
@@ -80,7 +93,6 @@ public class TouristController {
 
     @PostMapping("/edit")
     public String postEditAttraction(@ModelAttribute DTOTouristAttraction dtotouristAttraction) {
-
         TouristAttraction touristAttraction = new TouristAttraction();
         touristAttraction.setId(dtotouristAttraction.getId());
         touristAttraction.setName(dtotouristAttraction.getName());

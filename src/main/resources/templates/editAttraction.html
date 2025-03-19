@@ -7,7 +7,7 @@
     <title>Edit an attraction</title>
 </head>
 <body>
-<form action="#" th:action="@{/edit}" th:object="${attraction}" method="post">
+<form action="#" th:action="@{/edit}" th:object="${dto}" method="post">
     <fieldset align="center">
         <legend>Fil out the form:</legend>
 
@@ -22,7 +22,7 @@
 
         <p>
             <label for="city">City:</label>
-            <select id="city" name="city" th:field="*{by}">
+            <select id="city" name="city" th:field="*{byId}">
                 <option th:each="by : ${city}" th:value="${by.getById()}" th:text="${by.getByName()}">City</option>
             </select>
         </p>
@@ -31,7 +31,7 @@
             <legend>Tags:</legend>
             <label for="tagsId"></label>
             <div id="tagsId" th:each="tag : ${tags}">
-                <input type=checkbox th:field="*{tags}" th:value="${tag.getTagId()}" ><span th:text="${tag.getTagName()}"></span>
+                <input type=checkbox th:field="*{tagsId}" th:value="${tag.getTagId()}" ><span th:text="${tag.getTagName()}"></span>
             </div>
         </fieldset>
 

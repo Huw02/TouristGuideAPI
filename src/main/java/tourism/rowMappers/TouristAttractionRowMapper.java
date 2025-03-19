@@ -27,10 +27,6 @@ public class TouristAttractionRowMapper implements RowMapper<TouristAttraction> 
 
         touristAttraction.setBy(by);
 
-        //List<Tags>listOfTags = touristRepository.getTagsForAttraction(rs.getInt(touristAttraction.getId()));
-        //touristAttraction.setTags(listOfTags);
-
-        //touristAttraction.setTags(touristRepository.getTagsForAttraction(rs.getInt(touristAttraction.getId())));
 
 
         return touristAttraction;

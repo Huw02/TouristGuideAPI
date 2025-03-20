@@ -193,7 +193,6 @@ public class TouristRepository {
         return jdbcTemplate.query(sql, new TagsRowMapper());
     }
 
-
     public Tags getTagById(int tagId) {
         String sql = "SELECT * FROM tags WHERE tagsID = ?";
         List<Tags> listOfTags = jdbcTemplate.query(sql, new TagsRowMapper(), tagId);

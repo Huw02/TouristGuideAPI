@@ -1,0 +1,133 @@
+SQL Queries til oprettelse af database:
+CREATE DATABASE IF NOT EXISTS Touristguide;
+USE Touristguide;
+DROP TABLE IF EXISTS Attractions;
+DROP TABLE IF EXISTS Byer;
+DROP TABLE IF EXISTS Attractions_Tags;
+DROP TABLE IF EXISTS Tags;    
+
+
+CREATE TABLE Tags (
+	TagsID int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    Tags VARCHAR (30) NOT NULL
+    );
+    
+    
+CREATE TABLE Byer(
+	Byer VARCHAR(30) NOT NULL,
+    ByerID int(6) NOT NULL AUTO_INCREMENT PRIMARY KEY
+    );
+    
+
+    CREATE TABLE Attractions(
+	AttractionsID int(6) not NULL AUTO_INCREMENT PRIMARY KEY,
+    Name VARCHAR(20) NOT NULL UNIQUE,
+    Beskrivelse VARCHAR(500) NOT NULL,
+    ByerID int(6) NOT NULL,
+    FOREIGN KEY (ByerID) REFERENCES Byer (ByerID)
+    );
+
+
+CREATE TABLE Attractions_Tags(
+	AttractionsID int (6) NOT NULL,
+    TagsID int (6) not null,
+    FOREIGN KEY (AttractionsID) REFERENCES Attractions(AttractionsID),
+    FOREIGN KEY (TagsID) REFERENCES Tags(TagsID)
+    );
+    
+    
+INSERT INTO byer(byer)
+VALUES 
+("Aalborg"),
+    ("Aarhus"),
+    ("Albertslund"),
+    ("Allerød"),
+    ("Assens"),
+    ("Billund"),
+    ("Bjerringbro"),
+    ("Bornholm"),
+    ("Brøndby"),
+    ("Dragør"),
+    ("Esbjerg"),
+    ("Faaborg"),
+    ("Fredericia"),
+    ("Frederikshavn"),
+    ("Frederiksberg"),
+    ("Frederikssund"),
+    ("Gladsaxe"),
+    ("Greve"),
+    ("Grindsted"),
+    ("Haderslev"),
+    ("Hillerød"),
+    ("Hirtshals"),
+    ("Hjallerup"),
+    ("Holbæk"),
+    ("Holstebro"),
+    ("Horsens"),
+    ("Hvidovre"),
+    ("Ikast"),
+    ("Kerteminde"),
+    ("Kolding"),
+    ("Korsør"),
+    ("Køge"),
+    ("København"),
+    ("Lemvig"),
+    ("Maribo"),
+    ("Nykøbing Falster"),
+    ("Nykøbing Mors"),
+    ("Nyborg"),
+    ("Odense"),
+    ("Randers"),
+    ("Ringkøbing"),
+    ("Ringsted"),
+    ("Roskilde"),
+    ("Rudkøbing"),
+    ("Skagen"),
+    ("Skanderborg"),
+    ("Skive"),
+    ("Slagelse"),
+    ("Sorø"),
+    ("Svendborg"),
+    ("Thisted"),
+    ("Tønder"),
+    ("Vejle"),
+    ("Viborg"),
+    ("Vordingborg");
+    
+    
+INSERT INTO tags(tags)
+VALUES 
+("Forlystelsespark"),
+("Kunst"),
+("Museum"),
+("Koncert"),
+("Kultur"),
+("Underholdning"),
+("Restaurant"),
+("Børnevenlig"),
+("Gratis"),
+("Natur");
+
+
+INSERT INTO attractions(Name, Beskrivelse, ByerID)
+Values 
+("Tivoli", "Tivoli er den suverænt mest besøgte turistattraktion i Danmark med 2,3 mio. besøgende i 2021. Parken er Europas fjerdemest besøgte forlystelsespark", 33),
+("DR Byen", "DR Byen er hovedkvarteret for Danmarks Radio (DR) og et imponerende mediehus i København. Bygningen består af fire segmenter, der huser DR's tv- og radioproduktion, nyheder og koncerthuset. DR Koncerthuset, designet af arkitekten Jean Nouvel, er en af Europas mest anerkendte koncertsale med fantastisk akustik og et futuristisk udseende.", 33),
+("Den Lille Havfrue", "Inspireret af H.C. Andersens eventyr, denne lille, men berømte bronzestatue sidder på en sten ved Langelinie. Selvom den ofte kaldes skuffende lille af turister, er den stadig et must-see og en af Københavns mest kendte vartegn.", 33),
+("Nyhavn", "Den ikoniske havnepromenade med farverige bygninger, hyggelige restauranter og gamle træskibe. Nyhavn var engang hjem for forfatteren H.C. Andersen og er i dag et af de mest fotograferede steder i København. Perfekt til en gåtur langs vandet eller en bådtur i kanalerne.", 33);
+
+INSERT INTO attractions_tags(attractionsID, TagsID)
+Values 
+(1, 1),
+(1, 6),
+(1, 8),
+(2, 2),
+(2, 4),
+(2, 5),
+(2, 9),
+(3, 2),
+(3, 5),
+(3, 9),
+(4, 5),
+(4, 7),
+(4, 9);

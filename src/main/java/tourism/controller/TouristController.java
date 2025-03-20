@@ -54,8 +54,8 @@ public class TouristController {
         List<Integer> tempList = dtotouristAttraction.getTagsId();
         List<Tags> tagsList = new ArrayList<>();
 
-        if(tempList != null){
-            for(int i: tempList){
+        if (tempList != null) {
+            for (int i : tempList) {
                 tagsList.add(touristService.getTagsById(i));
             }
         }
@@ -101,12 +101,11 @@ public class TouristController {
         touristAttraction.setBy(tempBy);
 
 
-
         List<Integer> tempList = dtotouristAttraction.getTagsId();
         List<Tags> tagsList = new ArrayList<>();
 
-        if(tempList != null){
-            for(int i: tempList){
+        if (tempList != null) {
+            for (int i : tempList) {
                 tagsList.add(touristService.getTagsById(i));
             }
         }

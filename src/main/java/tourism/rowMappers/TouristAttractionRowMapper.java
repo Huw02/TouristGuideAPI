@@ -12,7 +12,7 @@ import java.util.List;
 
 public class TouristAttractionRowMapper implements RowMapper<TouristAttraction> {
 
-    private TouristRepository touristRepository = new TouristRepository();
+
 
     @Override
     public TouristAttraction mapRow(ResultSet rs, int rowNum) throws SQLException {

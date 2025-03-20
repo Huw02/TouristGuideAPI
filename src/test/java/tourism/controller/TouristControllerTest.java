@@ -37,17 +37,7 @@ class TouristControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("index"));
     }
-    /*
-    @Test
-    void testAttractionList() throws Exception {
-        when(touristService.getAttractions()).thenReturn(mockList);
-        mockMvc.perform(get("/attractionsList"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("attractionsList"))
-                .andExpect(model().attributeExists("attractionsList"))
-                .andExpect(model().attribute("attractionsList", mockList));
-        verify(touristService, times(1)).getAttractions();
-    } */
+
 
     @Test
     void postEditAttraction() throws Exception {

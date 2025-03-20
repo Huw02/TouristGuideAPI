@@ -18,9 +18,6 @@ public class TouristService {
     }
 
 
-
-
-
     public List<TouristAttraction> getAttractions() {
         return touristRepository.getAllTouristAttractions();
     }
@@ -29,12 +26,9 @@ public class TouristService {
         return touristRepository.getTouristAttractionByName(name);
     }
 
-
-
     public TouristAttraction updateTouristAttraction(TouristAttraction touristAttraction) {
         return touristRepository.updateTouristAttraction(touristAttraction);
     }
-
 
 
     public void removeAttraction(String name) {
@@ -42,42 +36,42 @@ public class TouristService {
     }
 
 
-    public List<Tags>getAllTags(){
+    public List<Tags> getAllTags() {
         return touristRepository.getAllTags();
     }
 
-    public List<Byer>getAllByer(){
+    public List<Byer> getAllByer() {
         return touristRepository.getAllbyer();
     }
 
 
-    public int getById(String name){
+    public int getById(String name) {
         return touristRepository.getById(name);
     }
-    public Byer getByerById(int id){
+
+    public Byer getByerById(int id) {
         return touristRepository.getByerById(id);
     }
 
-    public Byer getByWithName(String name){
+    public Byer getByWithName(String name) {
         return touristRepository.getByWithName(name);
     }
 
 
-    public List<Tags>getTagsByName(String name){
+    public List<Tags> getTagsByName(String name) {
         return touristRepository.getTagsForAttraction(touristRepository.getTouristAttractionByName(name).getId());
     }
 
-    public Tags getTagsById(int id){
+    public Tags getTagsById(int id) {
         return touristRepository.getTagById(id);
     }
 
 
-
-    public TouristAttraction getTouristAttractionByName(String name){
+    public TouristAttraction getTouristAttractionByName(String name) {
         return touristRepository.getTouristAttractionByName(name);
     }
 
-    public TouristAttraction addTouristAttraction(TouristAttraction touristAttraction){
+    public TouristAttraction addTouristAttraction(TouristAttraction touristAttraction) {
         return touristRepository.addTouristAttraction(touristAttraction);
     }
 

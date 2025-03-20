@@ -74,7 +74,5 @@ public class TouristAttraction {
         return null;
     }
 
-    public String seBy(){
-        return by.getByName();
-    }
+
 }
